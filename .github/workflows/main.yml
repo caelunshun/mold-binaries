@@ -7,15 +7,30 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - name: Clone mold repository
+        uses: actions/checkout@v2
         with:
           repository: rui314/mold
-          submodules: true
+          submodules: recursive
+        
+      - name: Install LLVM 11
+        shell: bash
+        run: |
+          sudo apt-get install clang-11
+          sudo apt-get install libstdc++6
+          sudo ln -sf clang-11 /usr/bin/clang
+          sudo ln -sf clang++-11 /usr/bin/clang++
           
-      - run: make CC=gcc-10 CXX=g++-10 -j2
+      - name: Build submodules
+        run: make submodules
         shell: bash
         
-      - uses: actions/upload-artifact@v2
+      - name: Build
+        run: make CC=gcc-10 CXX=g++-10 -j2
+        shell: bash
+        
+      - name: Upload
+        uses: actions/upload-artifact@v2
         with:
           name: mold
           path: mold
