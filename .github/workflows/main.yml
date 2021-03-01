@@ -26,7 +26,7 @@ jobs:
         shell: bash
         
       - name: Build
-        run: make CC=gcc-10 CXX=g++-10 -j2
+        run: make -j4
         shell: bash
         
       - name: Upload
