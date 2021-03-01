@@ -1,0 +1,23 @@
+name: Build Mold
+
+on:
+  release:
+    types:
+      - created
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: rui314/mold
+          submodules: true
+          
+      - run: make CC=gcc-10 CXX=g++-10 -j2
+        shell: bash
+        
+      - uses: actions/upload-artifact@v2
+        with:
+          name: mold
+          path: mold
+      
